@@ -1,9 +1,9 @@
 const Joi = require("@hapi/joi");
 
 const validateRegister = (user) => {
-    console.log(user, 'gfgfgfgfgfg');
+    console.log(user);
     const schema = Joi.object({
-        fullName: Joi.string().min(5).required(),
+        fullName: Joi.string().min(4).required(),
         email: Joi.string().min(5).required().email(),
         password: Joi.string().min(5).required(),
         passwordRep: Joi.string().min(5).required(),
@@ -11,7 +11,8 @@ const validateRegister = (user) => {
     // errors={};
     // user.PasswordConfirmation = isEmpty(user.PasswordConfirmation)?"":user.PasswordConfirmation
     // if(validator.isEmpty(user.PasswordConfirmation)) errors.PasswordConfirmation="the password repetition isn't the same"
-    const{error}=schema.validate(user);
+    const{error}=schema.validate(user.register, {abortEarly:false});
+    console.log(error,'uuuuuuuuu');
     return {error}
 };
 module.exports = { validateRegister };

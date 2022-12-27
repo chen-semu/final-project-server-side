@@ -57,7 +57,7 @@ const register = async (req, res) => {
   console.log(error);
   if (error) return res.status(400).json(error);
   await usersDB
-    .findOne({ email: req.body.email })
+    .findOne({ email: req.body.register.email })
     .then((user, err) => {
       if (err) return res.status(400).json(err);
       if (user) return res.json({ massage: "email already taken" });
@@ -66,16 +66,16 @@ const register = async (req, res) => {
       console.log(err);
     });
 
-    if(req.body.password!==req.body.passwordRep)return res.json({
+    if(req.body.register.password!==req.body.register.passwordRep)return res.json({
        massage: "the password and the pasword repetition are not the same" });
   const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(req.body.password, salt);
-  req.body.password = hashedPassword;
-  req.body.active = false;
+  const hashedPassword = await bcrypt.hash(req.body.register.password, salt);
+  req.body.register.password = hashedPassword;
+  req.body.register.active = false;
   await usersDB
-    .insertMany(req.body)
+    .insertMany(req.body.register)
     .then(() => {
-      res.json({massage:`success in adding ${req.body}`});
+      res.json({massage:`success in adding ${req.body.register}`});
     })
     .catch((err) => console.log(err));
 };
@@ -83,11 +83,11 @@ const register = async (req, res) => {
 const logIn = async (req, res) => {
   const { error } = validateLogIn(req.body);
   // if (error) return res.status(400).json({ error});
-  const email = req.body.email;
-  const password = req.body.password;
+  const email = req.body.LogIn.email;
+  const password = req.body.LogIn.password;
   const user = await usersDB.findOne({ email });
   if (!user) {
-    console.log(req.body, 'fvdfdfdfaa');
+    console.log(req.body.LogIn, 'fvdfdfdfaa');
     return res.status(404).json({ emailNotFound: "Email not found" });
   }
   const isMatch = await bcrypt.compare(`${password}`, `${user.password}`);

@@ -8,7 +8,7 @@ module.exports = validateLogIn = (user) => {
     email: Joi.string().min(5).required().email(),
     password: Joi.string().min(5).required(),
 });
-const{error}=schema.validate(user);
+const{error}=schema.validate(user.LogIn);
 return {error}
 };
 

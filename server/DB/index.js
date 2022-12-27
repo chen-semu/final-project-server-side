@@ -5,6 +5,6 @@ mongoose.connect(usersDataBase,{
     useNewUrlParser:true,
     useUnifiedTopology:true,
 }).then(()=>console.log("user database connected"))
-.catch((error)=>console.log("connection to database faild"+error.massage))
+.catch((error)=>console.log("connection to database faild"+error))
 
 module.exports=mongoose.connection
