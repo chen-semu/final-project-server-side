@@ -5,7 +5,7 @@ const express= require("express")
 const app= express()
 const cors= require("cors")
 var bodyParser = require('body-parser');
-const port= 9090
+const port= 8080
 require("./DB/index")
 // const io=require('socket.io')(server)
 const passport=require("passport")
