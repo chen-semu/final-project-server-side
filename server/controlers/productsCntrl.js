@@ -20,21 +20,19 @@ const getAllProducts = async (req, res) => {
     }
     return res.status(200).json({
       success: true,
-      massage: result,
+      result,
     });
   });
 };
 const addNewProduct = async (req, res) => {
-  // console.log(image);
   try {
     const image  = req.body.image;
-    console.log(image);
   const result = await cloudinary.uploader.upload(image, {
     folder: "products",
   });
   
     const product = await productModel({
-      // name,
+      name:req.body.name,
       images: {
         public_id: result.public_id,
         url: result.secure_url,
@@ -59,17 +57,19 @@ const addNewProduct = async (req, res) => {
 
 const getProductById = async (req, res) => {
   await productModel
-    .findById(req.params.id)
-    .then((product) => {
-      if (!product) {
-        return res.json({
-          success: false,
-          massage: "product is not available",
-        });
-      }
+  .findOne({name:`${req.params.id}`})
+  .then((product) => {
+    if (!product) {
+      return res.json({
+        success: false,
+        massage: "product is not available",
+      });
+    }
+    // console.log(product,);
       return res.status(200).json({ success: true, product });
     })
-    .catch((error) => res.status(400).json({ success: false, error }));
+    // console.log(product);
+    .catch((error) =>{console.log(res.status(400).json({ success: false, error }))});
 };
 
 const updateProduct = async (req, res) => {

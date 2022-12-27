@@ -78,16 +78,17 @@ const register = async (req, res) => {
       res.json({massage:`success in adding ${req.body.register}`});
     })
     .catch((err) => console.log(err));
-};
-
-const logIn = async (req, res) => {
+  };
+  
+  const logIn = async (req, res) => {
+  console.log(req); 
   const { error } = validateLogIn(req.body);
   // if (error) return res.status(400).json({ error});
-  const email = req.body.LogIn.email;
-  const password = req.body.LogIn.password;
+  const email = req.body.email;
+  const password = req.body.password;
   const user = await usersDB.findOne({ email });
   if (!user) {
-    console.log(req.body.LogIn, 'fvdfdfdfaa');
+    console.log(req.body, 'fvdfdfdfaa');
     return res.status(404).json({ emailNotFound: "Email not found" });
   }
   const isMatch = await bcrypt.compare(`${password}`, `${user.password}`);
@@ -103,7 +104,7 @@ const logIn = async (req, res) => {
         (err, token) => {
       if (err) return res.status(400).json({ err});
       // return res.json({ success: true, token: `${token}, ${req.header}`, });
-      // const token = jwt.sign({ _id: user._id }, key);  
+      // const token = jwt.sign({ _id: user._id }, key); 
       return res.header("authToken", token).json({ user, token});
     });
   } else {
